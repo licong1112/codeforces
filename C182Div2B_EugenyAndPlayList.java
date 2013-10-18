@@ -1,7 +1,7 @@
 /**
  * Practiced on 10/18/2013
  * 
- * http://codeforces.com/contest/302/problem/A
+ * http://codeforces.com/contest/302/problem/B
  */
 
 package com.congli.codeforces;
@@ -14,42 +14,43 @@ import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-public class C182Div2A_EugenyAndArray {
+public class C182Div2B_EugenyAndPlayList {
 
 	BufferedReader in;
 	PrintWriter out;
 	StringTokenizer tok = new StringTokenizer("");
 
 	public static void main(String[] args) {
-		C182Div2A_EugenyAndArray test = new C182Div2A_EugenyAndArray();
+		C182Div2B_EugenyAndPlayList test = new C182Div2B_EugenyAndPlayList();
 		test.start();
 	}
 
 	public void solve() throws IOException 
 	{
 		int n = readInt(), m = readInt();
-		int[] array = new int[2];
+		int[] playlist = new int[n+1];
 		for (int i = 0; i < n; ++i) {
-			if (readInt() == 1) {
-				++array[0];
-			} else {
-				++array[1];
-			}
+			playlist[i+1] = playlist[i] + readInt()*readInt();
 		}
-		
-		int num_pair = Math.min(array[0], array[1]);
-		int left = 0, right = 0, num_digits = 0;
 		for (int i = 0; i < m; ++i) {
-			left = readInt();
-			right = readInt();
-			num_digits = right-left+1;
-			if (num_digits % 2 == 0 && num_digits/2 <= num_pair) {
-				out.println(1);
-			} else {
-				out.println(0);
-			}
+			out.println(findSong(readInt(), playlist));
 		}
 	}	
+	
+	public int findSong(int time, int[] playlist) {
+		int start = 1, end = playlist.length-1, mid = 0;
+		while (start <= end) {
+			mid = start + (end-start)/2;
+			if (playlist[mid] >= time && playlist[mid-1] < time) {
+				return mid;
+			} else if (playlist[mid] < time) {
+				start = mid+1;
+			} else {
+				end = mid-1;
+			}
+		}
+		return 0;
+	}
 	
 	public void start()
 	{
@@ -93,5 +94,4 @@ public class C182Div2A_EugenyAndArray {
 		return Double.parseDouble(readString());
 	}
 }
-
 
